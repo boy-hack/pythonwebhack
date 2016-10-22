@@ -3,12 +3,12 @@
 <div class="get">
   <div class="am-g">
     <div class="am-u-lg-12">
-      <h1 class="get-title">IP详细地址定位</h1>
+      <h1 class="get-title">CMS在线识别</h1>
     </div>
 	    <div class="am-form-group">
-          <form action="/ip" method="POST">
+          <form action="/webdna" method="POST">
 	      <div class="am-u-sm-5 am-u-sm-offset-3">
-	      <input id='search1' type="text" name="search" minchecked="3" class="am-form-field am-round" placeholder="请输入IP地址"/>
+	      <input id='search1' type="text" name="search" minchecked="3" class="am-form-field am-round" placeholder="请输入要查询的url地址"/>
 	      </div>
 		<div class="am-u-sm-1">
 	      <button id='search' type="submit" class="am-btn am-btn-primary">查询</button>
@@ -24,7 +24,7 @@
   <div class="am-g am-container">
 	<div class="am-g doc-am-g">
     <div class="am-form-group">
-        {% if data %}
+{% if data %}
             <table class="am-table am-table-bordered am-table-radius">
     <thead>
         <tr>
@@ -32,34 +32,29 @@
             <th>内容</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody>{% if data.url %}
+
         <tr>
-            <td>定位半径</td>
-            <td><code>{{data.radius}}米</code></td>
+            <td>查询网址</td>
+            <td><code>{{data.url}}</code></td>
         </tr>
         <tr>
-            <td>所在经度</td>
-            <td><code>{{data.lng}}</code></td>
+            <td>CMS识别</td>
+            <td><code>{{data.name}}</code></td>
         </tr>
     <tr>
-            <td>所在纬度</td>
-            <td><code>{{data.lat}}</code></td>
+            <td>MD5匹配值</td>
+            <td><code>{{data.md5}}</code></td>
         </tr>
-    <tr>
-            <td>详细地址</td>
-            <td><code>{{data.formatted_address}}</code></td>
+     {% else %}
+            <tr>
+            <td>匹配失败</td>
+            <td><code>{{data.error}}</code></td>
         </tr>
-    <tr>
-            <td>行政区划代码（身份证前六位）</td>
-            <td><code>{{data.admin_area_code}}</code></td>
-        </tr>
-     <tr>
-            <td>静态地图</td>
-            <td><img src="{{ data.map }}" /></td>
-        </tr>
+    {% endif %}
     </tbody>
-</table>
-        {% endif %}
+</table>{% endif %}
+
 
 
 	  	  <div class="box">
