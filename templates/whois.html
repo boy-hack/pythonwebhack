@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="get">
+  <div class="am-g">
+    <div class="am-u-lg-12">
+      <h1 class="get-title">Whois 在线查询</h1>
+    </div>
+	    <div class="am-form-group">
+          <form action="/whois" method="POST">
+	      <div class="am-u-sm-5 am-u-sm-offset-3">
+	      <input id='search1' type="text" name="search" minchecked="3" class="am-form-field am-round" placeholder="请输入域名 example:baidu.com"/>
+	      </div>
+		<div class="am-u-sm-1">
+	      <button id='search' type="submit" class="am-btn am-btn-primary">查询</button>
+	      </div>
+
+		  	  <div class="box">
+						</div></form>
+	    </div>
+  </div>
+</div>
+
+<div class="about">
+  <div class="am-g am-container">
+	<div class="am-g doc-am-g">
+    <div class="am-form-group">
+        {% if data %}
+<table class="am-table am-table-bordered am-table-radius">
+    <thead>
+        <tr>
+            <th>详细信息</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{data|safe}}</td>
+        </tr>
+    </tbody>
+</table>
+        {% endif %}
+
+
+	  	  <div class="box">
+					</div>
+    </div>
+    </div>
+    </div>
+
+    </div>
+{% endblock %}

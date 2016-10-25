@@ -4,8 +4,10 @@
 from flask import Flask,render_template,request
 import re
 import baiduip
+from password import PasswdGenerator
 import cms
 import sys
+import whois
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
@@ -41,6 +43,38 @@ def webdna():
         return render_template('cms.html',data=data,title="CMS识别")
     else:
         return render_template('cms.html',title="CMS识别")
+
+#在线密码生成
+@app.route('/password',methods=["get","post"])
+def password_build():
+    if request.method == 'POST':
+        birthday = request.form.get("birthday","")
+        fullname = request.form.get("fullname","")
+        nickname = request.form.get("nickname","")
+        englishname = request.form.get("englishname","")
+        partnername = request.form.get("partnername","")
+        phone = request.form.get("phone","")
+        qq = request.form.get("qq","")
+        company = request.form.get("company","")
+        domain = request.form.get("domain","")
+        oldpasswd = request.form.get("oldpasswd","")
+        keywords = request.form.get("keywords","")
+        keynumbers = request.form.get("keynumbers","")
+        pwgen = PasswdGenerator(fullname=fullname,nickname=nickname,englishname=englishname,partnername=partnername,phone=phone,qq=qq,company=company,domain=domain,oldpasswd=oldpasswd,keywords=keywords,keynumbers=keynumbers,birthday=birthday)
+        wordlist = pwgen.generate()
+        return render_template('password.html',data=wordlist,title="社工密码生成")
+    else:
+        return render_template('password.html',title="社工密码生成")
+
+#Whois 在线查询
+@app.route('/whois',methods=["get","post"])
+def whoisa():
+    if request.method == 'POST':
+        url = request.form.get("search")
+        data = whois.whois(url).replace("\n","</br>")
+        return render_template('whois.html',data=data,title="Whois查询")
+    else:
+        return render_template('whois.html',title="Whois查询")
 
 if __name__ == '__main__':
     app.run(debug=True)
