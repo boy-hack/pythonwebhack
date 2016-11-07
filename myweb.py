@@ -8,6 +8,8 @@ from password import PasswdGenerator
 import cms
 import sys
 import whois
+import skg
+
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
@@ -75,6 +77,16 @@ def whoisa():
         return render_template('whois.html',data=data,title="Whois查询")
     else:
         return render_template('whois.html',title="Whois查询")
+
+#调用外部社工库进行查询
+@app.route('/pass',methods=["get","post"])
+def findpass():
+    if request.method == 'POST':
+        info = request.form.get("search")
+        data = skg.findpass(info)
+        return render_template('skg.html',data=data,title="社工库查询")
+    else:
+        return render_template('skg.html',title="社工库查询")
 
 if __name__ == '__main__':
     app.run(debug=True)
