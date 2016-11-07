@@ -50,6 +50,7 @@ def webdna():
 @app.route('/password',methods=["get","post"])
 def password_build():
     if request.method == 'POST':
+        from flask import make_response
         birthday = request.form.get("birthday","")
         fullname = request.form.get("fullname","")
         nickname = request.form.get("nickname","")
@@ -64,7 +65,12 @@ def password_build():
         keynumbers = request.form.get("keynumbers","")
         pwgen = PasswdGenerator(fullname=fullname,nickname=nickname,englishname=englishname,partnername=partnername,phone=phone,qq=qq,company=company,domain=domain,oldpasswd=oldpasswd,keywords=keywords,keynumbers=keynumbers,birthday=birthday)
         wordlist = pwgen.generate()
-        return render_template('password.html',data=wordlist,title="社工密码生成")
+        content = '\n'.join(wordlist)
+        #content = "long text"
+        response = make_response(content)
+        response.headers["Content-Disposition"] = "attachment; filename=pass.txt"
+        return response
+        #return render_template('password.html',data=wordlist,title="社工密码生成")
     else:
         return render_template('password.html',title="社工密码生成")
 
