@@ -4,9 +4,12 @@
 > web框架是flask  前端框架是amazeUI
 
 ## 安装
-`pip install flask`
-`pip install requests`
-`pip install MySQLdb  `
+`pip install flask`  
+
+`pip install requests`  
+
+`pip install MySQLdb  `  
+
 
 [usage]: python `myweb.py `
 
