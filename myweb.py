@@ -10,11 +10,17 @@ import sys
 import whois
 import skg
 
+import MySQLdb
+import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-app = Flask(__name__)
 
+
+app = Flask(__name__)
+#连接数据库操作
+db = MySQLdb.connect("127.0.0.1","root","","pyhack",charset='utf8' )
+cursor = db.cursor()
 
 @app.route('/',methods=["get","post"])
 def index():
@@ -93,6 +99,34 @@ def findpass():
         return render_template('skg.html',data=data,title="社工库查询")
     else:
         return render_template('skg.html',title="社工库查询")
+
+#集成wooyun漏洞平台
+@app.route('/wooyun',methods=["get","post"])
+def wooyun():
+    searchword = request.args.get('key', '').strip()
+    log_id = request.args.get('id', '').strip()
+    data = {}
+    table = list()
+    if log_id:
+        # 使用execute方法执行SQL语句
+        cursor.execute(MySQLdb.escape_string("SELECT * from emlog_blog where gid=%s"%log_id))
+        # 使用 fetchone() 方法获取一条数据库。
+        results = cursor.fetchone()
+        data["id"] = results[0]
+        data["text"] = results[2]
+        data["title"] = results[1]
+    if searchword:
+        sql = 'SELECT gid,title from emlog_blog where title like "%%%s%%"'%searchword
+        cursor.execute(sql)
+        #cursor.execute('SELECT * from emlog_blog limit 10')
+        results = cursor.fetchall()
+
+        for rows in results:
+            tdata = {}
+            tdata["id"] = rows[0]
+            tdata["title"] = rows[1]
+            table.append(tdata)
+    return render_template("wooyun.html",title="乌云漏洞查询",data=data,table=table)
 
 if __name__ == '__main__':
     app.run(debug=True)

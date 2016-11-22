@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="get">
+  <div class="am-g">
+    <div class="am-u-lg-12">
+      <h1 class="get-title">WooYun漏洞查询</h1>
+    </div>
+	    <div class="am-form-group">
+          <form action="" method="GET">
+	      <div class="am-u-sm-5 am-u-sm-offset-3">
+	      <input id='search1' type="text" name="key" minchecked="3" class="am-form-field am-round" placeholder="请输入KeyWords"/>
+	      </div>
+		<div class="am-u-sm-1">
+	      <button id='search' type="submit" class="am-btn am-btn-primary">查询</button>
+	      </div>
+
+		  	  <div class="box">
+						</div></form>
+	    </div>
+  </div>
+</div>
+
+<div class="about">
+  <div class="am-g am-container">
+	<div class="am-g doc-am-g">
+    <div class="am-form-group">
+    {% if table %}
+            <table class="am-table am-table-bordered am-table-radius">
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>标题</th>
+            <th>查看</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for foo in table %}
+        <tr>
+            <td>{{foo.id}}</td>
+            <td>{{foo.title}}</td>
+            <td><a href="?id={{ foo.id }}">查看</a></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+        {% endif %}
+                {% if data %}
+                <h1>{{data.title}}</h1>
+                {{data.text|safe}}
+            {% endif %}
+	  	  <div class="box">
+					</div>
+    </div>
+    </div>
+    </div>
+
+    </div>
+{% endblock %}
