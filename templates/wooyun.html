@@ -38,11 +38,17 @@
         <tr>
             <td>{{foo.id}}</td>
             <td>{{foo.title}}</td>
-            <td><a href="?id={{ foo.id }}">查看</a></td>
+            <td><a href="{{ url_for('wooyun') }}?id={{ foo.id }}">查看</a></td>
         </tr>
     {% endfor %}
     </tbody>
 </table>
+        {% if next %}
+        <ul class="am-pagination">
+          <li><a href="{{ url_for('wooyun1',pages=prev) }}">&laquo; Prev</a></li>
+          <li><a href="{{ url_for('wooyun1',pages=next) }}">Next &raquo;</a></li>
+        </ul>
+        {% endif %}
         {% endif %}
                 {% if data %}
                 <h1>{{data.title}}</h1>

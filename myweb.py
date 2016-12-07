@@ -102,7 +102,8 @@ def findpass():
 
 #集成wooyun漏洞平台
 @app.route('/wooyun',methods=["get","post"])
-def wooyun():
+@app.route('/wooyun/<int:pages>',methods=["get","post"])
+def wooyun(pages = 0):
     searchword = request.args.get('key', '').strip()
     log_id = request.args.get('id', '').strip()
     data = {}
@@ -116,7 +117,7 @@ def wooyun():
         data["text"] = results[2]
         data["title"] = results[1]
     if searchword:
-        sql = 'SELECT gid,title from emlog_blog where title like "%%%s%%"'%searchword
+        sql = 'SELECT gid,title from emlog_blog where title like "%%%s%%"'%(searchword)
         cursor.execute(sql)
         #cursor.execute('SELECT * from emlog_blog limit 10')
         results = cursor.fetchall()
@@ -127,6 +128,26 @@ def wooyun():
             tdata["title"] = rows[1]
             table.append(tdata)
     return render_template("wooyun.html",title="乌云漏洞查询",data=data,table=table)
+
+#集成wooyun漏洞平台 -被忽略的漏洞
+@app.route('/wooyun1',methods=["get","post"])
+@app.route('/wooyun1/<int:pages>',methods=["get","post"])
+def wooyun1(pages=0):
+    if pages is None:
+        pages = 0
+    if pages < 0:
+        pages = 0
+    sql = 'SELECT gid,title from emlog_blog where content like "%%%s%%" limit %d,%d'%("无影响厂商忽略",pages*20,20)
+    print sql
+    cursor.execute(sql)
+    results = cursor.fetchall()
+    table = list()
+    for rows in results:
+        tdata = {}
+        tdata["id"] = rows[0]
+        tdata["title"] = rows[1]
+        table.append(tdata)
+    return render_template("wooyun.html",title="乌云忽略漏洞查询",table=table,next=pages+1,prev=pages-1)
 
 if __name__ == '__main__':
     app.run(debug=True)
